@@ -1,0 +1,15 @@
+[package]
+name = "minlambda"
+version = "0.1.0"
+authors = ["iliana destroyer of worlds <iliana@buttslol.net>"]
+license = "MIT"
+edition = "2018"
+
+[dependencies]
+serde = "1"
+serde_json = "1"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 's'
