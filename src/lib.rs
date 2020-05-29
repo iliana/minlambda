@@ -44,10 +44,10 @@
 //! you're not really reducing your total dependency closure compared to the [AWS Labs
 //! runtime][awslabs].
 //!
-//! The HTTP client was built to work with Lambda, and not to be a generic RFC-compliant HTTP
-//! client; if the underlying protocol subtly changes, this runtime could break unexpectedly. (This
-//! probably won't happen: we believe that the subset of the HTTP spec we *do* implement is by the
-//! book.)
+//! The HTTP client was built to work with Lambda's runtime API, and not to be a generic
+//! RFC-compliant HTTP client; if Lambda's underlying interface subtly changes, this runtime could
+//! break unexpectedly. (This probably won't happen: we believe that the subset of the HTTP spec we
+//! implement is by the book.)
 //!
 //! [Rusoto]: https://github.com/rusoto/rusoto
 //! [hyper]: https://docs.rs/hyper
@@ -82,7 +82,7 @@
 //! # Disclaimer
 //!
 //! The author of this crate works at AWS, but this is not an official AWS project, nor does it
-//! necessarily represent opinions of AWS.
+//! necessarily represent opinions of or recommended best-practices on AWS.
 
 #![forbid(unsafe_code)]
 #![deny(
