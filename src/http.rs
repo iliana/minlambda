@@ -1,3 +1,6 @@
+// Copyright (c) 2020 iliana destroyer of worlds <iliana@buttslol.net>
+// SPDX-License-Identifier: MIT
+
 use serde::{de::DeserializeOwned, ser::SerializeStruct, Serialize, Serializer};
 use std::io::{BufRead, BufReader, BufWriter, Error, ErrorKind, Read, Result, Write};
 use std::net::{SocketAddr, TcpStream};
@@ -33,7 +36,7 @@ where
                 if name.eq_ignore_ascii_case("Transfer-Encoding") && value == "chunked" {
                     length = Some(None);
                 } else if name.eq_ignore_ascii_case("Content-Length") {
-                    if let Some(value) = value.parse().ok() {
+                    if let Ok(value) = value.parse() {
                         length = Some(Some(value));
                     }
                 }
@@ -154,15 +157,13 @@ impl Read for Body {
                 self.stream.read_exact(&mut [0; 2])?;
             }
             Ok(count)
+        } else if self.remaining == 0 {
+            Ok(0)
         } else {
-            if self.remaining == 0 {
-                Ok(0)
-            } else {
-                let len = buf.len().min(self.remaining);
-                let count = self.stream.read(&mut buf[..len])?;
-                self.remaining -= count;
-                Ok(count)
-            }
+            let len = buf.len().min(self.remaining);
+            let count = self.stream.read(&mut buf[..len])?;
+            self.remaining -= count;
+            Ok(count)
         }
     }
 }
