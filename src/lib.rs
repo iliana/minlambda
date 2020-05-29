@@ -15,11 +15,12 @@
 //! # What it does
 //!
 //! minlambda implements the [AWS Lambda runtime interface][interface], deserializing events and
-//! serializing responses with [Serde JSON][`serde_json`].
+//! serializing responses with [Serde JSON][json].
 //!
 //! To communicate with the runtime API over HTTP, minlambda uses a purpose-built HTTP client.
 //!
 //! [interface]: https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html
+//! [json]: https://docs.rs/serde_json
 //!
 //! # What it doesn't
 //!
