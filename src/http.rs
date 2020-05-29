@@ -66,13 +66,13 @@ pub(crate) fn post<S>(addr: SocketAddr, path: &str, body: &S) -> Result<()>
 where
     S: Serialize,
 {
-    let mut stream = ChunkedWriter::new(http_start(addr, "POST", path, true)?);
+    let mut stream = ChunkedWriter(http_start(addr, "POST", path, true)?);
     serde_json::to_writer(&mut stream, body)?;
     check_response_code(&mut stream.finish()?.into_inner()?)
 }
 
 pub(crate) fn post_error(addr: SocketAddr, path: &str, ty: &'static str, err: &str) -> Result<()> {
-    let stream = ChunkedWriter::new(http_start(addr, "POST", path, true)?);
+    let stream = ChunkedWriter(http_start(addr, "POST", path, true)?);
     let mut writer = serde_json::Serializer::new(stream);
 
     let mut s = writer.serialize_struct("Error", 2)?;
@@ -171,10 +171,6 @@ impl Read for Body {
 struct ChunkedWriter(BufWriter<TcpStream>);
 
 impl ChunkedWriter {
-    pub(crate) fn new(writer: BufWriter<TcpStream>) -> ChunkedWriter {
-        ChunkedWriter(writer)
-    }
-
     pub(crate) fn finish(mut self) -> Result<BufWriter<TcpStream>> {
         self.0.write_all(b"0\r\n\r\n")?;
         Ok(self.0)
