@@ -119,7 +119,7 @@ where
     F: FnMut(D) -> Result<S, E>,
     D: DeserializeOwned,
     S: Serialize,
-    E: std::error::Error + 'static,
+    E: std::fmt::Display + 'static,
 {
     let addr: SocketAddr = std::env::var("AWS_LAMBDA_RUNTIME_API")
         .expect("could not get $AWS_LAMBDA_RUNTIME_API")
@@ -163,7 +163,7 @@ where
     F: FnMut(D) -> Result<S, E>,
     D: DeserializeOwned,
     S: Serialize,
-    E: std::error::Error + 'static,
+    E: std::fmt::Display + 'static,
 {
     http::get(addr, "invocation/next").and_then(|(request_id, body)| match handler(body) {
         Ok(response) => http::post(
